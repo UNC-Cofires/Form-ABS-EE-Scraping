@@ -9,16 +9,11 @@ import os
 
 def parse_edgar_index_file(filepath):
     """
-    Parse an SEC EDGAR full-index .idx file into a pandas DataFrame.
+    Parse an SEC EDGAR full-index form.idx file into a pandas DataFrame.
+    These files are available at: https://www.sec.gov/Archives/edgar/full-index/
 
-    Parameters
-    ----------
-    filepath : str
-        Path to the local .idx file
-
-    Returns
-    -------
-    pd.DataFrame
+    param: filepath: path to local form.idx file
+    returns: df: pandas dataframe listing company name, CIK, form type, and filing date
     """
     with open(filepath, 'r', encoding='utf-8') as f:
         lines = f.readlines()
@@ -42,7 +37,6 @@ def parse_edgar_index_file(filepath):
     col_names = ['Form Type', 'Company Name', 'CIK', 'Date Filed', 'File Name']
 
     # Find the starting character position of each column name
-    #col_starts = [header_line.index(col) for col in col_names]
     col_starts = [0,16,78,90,102]
 
     # Build colspecs: list of (start, end) tuples required by read_fwf

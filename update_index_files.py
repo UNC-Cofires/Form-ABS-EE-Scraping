@@ -68,14 +68,19 @@ pwd = os.getcwd()
 
 # Specify periods of interest
 start_date = pd.Timestamp('2016-11-23')   # Regulation AB II compliance date
-end_date = pd.Timestamp('today')
+today_date = pd.Timestamp('today')
 
 # Convert to quarters
 start_quarter = start_date.to_period('Q')
-end_quarter = end_date.to_period('Q')
+end_quarter = today_date.to_period('Q')
 
-# Scrape data through end of last quarter
+# Oftentimes companies make mistakes in their filings that take 
+# time to correct. For this reason, we will scrape data through 
+# the end of the last quarter whose end date is at least 60 days ago. 
 end_quarter = end_quarter - 1
+
+if (today_date - end_quarter.end_time).days < 60:
+    end_quarter = end_quarter - 1
 
 # Get range of data to scrape
 periods = pd.period_range(start_quarter,end_quarter)
@@ -133,25 +138,54 @@ for period in periods:
 
 filepaths = [os.path.join(raw_folder,f) for f in np.sort(os.listdir(raw_folder)) if f.endswith('form.idx')]
 
-df_list = []
+form_ABSEE_df_list = []
 
 for filepath in filepaths:
     
-    print('Extracting data from:',filepath.split('/')[-1])
+    print('Extracting ABS-EE data from:',filepath.split('/')[-1])
 
-    df = parse_edgar_index_file(filepath)
-    df = df[df['Form Type'].isin(['ABS-EE','ABS-EE/A'])]
-    df_list.append(df)
+    form_ABSEE_df = parse_edgar_index_file(filepath)
+    form_ABSEE_df = form_ABSEE_df[form_ABSEE_df['Form Type'].isin(['ABS-EE','ABS-EE/A'])]
+    form_ABSEE_df_list.append(form_ABSEE_df)
 
-df = pd.concat(df_list)
-df = df.sort_values(by=['CIK','Date Filed']).reset_index(drop=True)
+form_ABSEE_df = pd.concat(form_ABSEE_df_list)
+form_ABSEE_df = form_ABSEE_df.sort_values(by=['CIK','Date Filed']).reset_index(drop=True)
+
+### *** ALSO PULL DATA ON ALL FILINGS OF COMPANIES WITH ABS-EE FORMS *** ###
+
+ABS_company_CIKs = form_ABSEE_df['CIK'].unique()
+
+ABS_company_df_list = []
+
+for filepath in filepaths:
+    
+    print('Extracting ABS company data from:',filepath.split('/')[-1])
+
+    ABS_company_df = parse_edgar_index_file(filepath)
+    ABS_company_df = ABS_company_df[ABS_company_df['CIK'].isin(ABS_company_CIKs)]
+    ABS_company_df_list.append(ABS_company_df)
+
+ABS_company_df = pd.concat(ABS_company_df_list)
+ABS_company_df = ABS_company_df.sort_values(by=['CIK','Date Filed']).reset_index(drop=True)
 
 ### *** SAVE RESULTS *** ###
 
+## Form ABS-EE filings
+
 # Save as parquet
 outname = os.path.join(clean_folder,'ABS-EE_index_file.parquet')
-df.to_parquet(outname)
+form_ABSEE_df.to_parquet(outname)
 
 # And also as CSV
 outname = os.path.join(clean_folder,'ABS-EE_index_file.csv')
-df.to_csv(outname,index=False)
+form_ABSEE_df.to_csv(outname,index=False)
+
+## All filings of companies that have submitted a form ABS-EE
+
+# Save as parquet
+outname = os.path.join(clean_folder,'ABS_company_index_file.parquet')
+ABS_company_df.to_parquet(outname)
+
+# And also as CSV
+outname = os.path.join(clean_folder,'ABS_company_index_file.csv')
+ABS_company_df.to_csv(outname,index=False)

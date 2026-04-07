@@ -18,7 +18,7 @@ def parse_edgar_index_file(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
         lines = f.readlines()
 
-    # --- Step 1: Locate the column header line and dashes separator ---
+    # --- Step 1: Locate the column header line and dashes separator --- #
     header_line_idx = None
     dash_line_idx = None
 
@@ -32,7 +32,7 @@ def parse_edgar_index_file(filepath):
     if header_line_idx is None or dash_line_idx is None:
         raise ValueError(f"Could not find column header or separator line in: {filepath}")
 
-    # --- Step 2: Derive fixed-width column positions from the header line ---
+    # --- Step 2: Derive fixed-width column positions from the header line --- #
     header_line = lines[header_line_idx]
     col_names = ['Form Type', 'Company Name', 'CIK', 'Date Filed', 'File Name']
 
@@ -43,7 +43,7 @@ def parse_edgar_index_file(filepath):
     colspecs = [(col_starts[i], col_starts[i + 1]) for i in range(len(col_starts) - 1)]
     colspecs.append((col_starts[-1], None))  # last column runs to end of line
 
-    # --- Step 3: Extract data rows and parse ---
+    # --- Step 3: Extract data rows and parse --- #
     data_str = ''.join(lines[dash_line_idx + 1:])
 
     df = pd.read_fwf(
@@ -53,7 +53,7 @@ def parse_edgar_index_file(filepath):
         dtype='string[pyarrow]'
     )
 
-    # --- Step 4: Clean up ---
+    # --- Step 4: Clean up --- #
     df = df.apply(lambda s: s.str.strip())
     df = df.dropna(how='all').reset_index(drop=True)
     df['Date Filed'] = pd.to_datetime(df['Date Filed'])
@@ -66,21 +66,15 @@ def parse_edgar_index_file(filepath):
 # Get current working directory 
 pwd = os.getcwd()
 
-# Specify periods of interest
+# Specify period of interest
 start_date = pd.Timestamp('2016-11-23')   # Regulation AB II compliance date
 today_date = pd.Timestamp('today')
 
-# Convert to quarters
+# Determine which quarters fall within this period
+# (only download data for those that have been completed). 
 start_quarter = start_date.to_period('Q')
-end_quarter = today_date.to_period('Q')
-
-# Oftentimes companies make mistakes in their filings that take 
-# time to correct. For this reason, we will scrape data through 
-# the end of the last quarter whose end date is at least 60 days ago. 
-end_quarter = end_quarter - 1
-
-if (today_date - end_quarter.end_time).days < 60:
-    end_quarter = end_quarter - 1
+current_quarter = today_date.to_period('Q')
+end_quarter = current_quarter - 1
 
 # Get range of data to scrape
 periods = pd.period_range(start_quarter,end_quarter)

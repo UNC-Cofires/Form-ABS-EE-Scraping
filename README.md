@@ -110,11 +110,11 @@ python concatenate_CMBS_data.py
 ## Limitations
 - **Multi-property loans:** Current version excludes loans secured by multiple properties due to inconsistent reporting across deals. Future versions will attempt to address this limitation.
 - **Historical coverage:** Limited to post-Regulation AB II period (November 2016+).
-- **Data quality control:** Imperfect reporting practices can lead to errors and inconsistencies that become incorporated into the data outputs of the pipeline. While the pipeline includes several data quality controls (e.g., removal of duplicated or superseded reports, consistency checks for original loan amounts) further data cleaning is likely to be necessary prior to analysis.
+- **Data quality:** Imperfect reporting practices can lead to errors and inconsistencies that become incorporated into the data outputs of the pipeline. While the pipeline includes several quality controls (e.g., removal of duplicated or superseded reports, consistency checks for original loan amounts, etc.) further data cleaning is likely to be necessary prior to analysis.
 
 ## Citation
 
 If you use this code in your research, please cite as:
 ```
-Fitzmason, K. (2026). Form ABS-EE Scraping (Version 1.0.0) [Computer software]. https://doi.org/10.5281/zenodo.19473844
+Fitzmason, K. (2026). Form ABS-EE Scraping (Version 1.0.0) [Computer software]. https://doi.org/10.5281/zenodo.19473843
 ```

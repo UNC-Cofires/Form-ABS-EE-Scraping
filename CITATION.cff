@@ -12,10 +12,10 @@ authors:
     orcid: 'https://orcid.org/0009-0005-2774-635X'
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.19473844
+    value: 10.5281/zenodo.19473843
     description: Zenodo DOI for all versions
 repository-code: 'https://github.com/UNC-Cofires/Form-ABS-EE-Scraping'
-url: 'https://doi.org/10.5281/zenodo.19473844'
+url: 'https://doi.org/10.5281/zenodo.19473843'
 abstract: >-
   A Python-based pipeline for scraping and processing loan- and
   property-level data from SEC Form ABS-EE filings of Commercial

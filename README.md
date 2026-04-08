@@ -114,7 +114,7 @@ python concatenate_CMBS_data.py
 
 ## Citation
 
-If you use this code in your research, please cite:
+If you use this code in your research, please cite as:
 ```
-<add citation once Zenodo record is created>
+Fitzmason, K. (2026). Form ABS-EE Scraping (Version 1.0.0) [Computer software]. https://doi.org/10.5281/zenodo.19473844
 ```

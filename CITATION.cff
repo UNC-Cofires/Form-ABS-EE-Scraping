@@ -1,0 +1,40 @@
+cff-version: 1.2.0
+title: 'Form ABS-EE Scraping: CMBS Loan and Property Data Extraction'
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Kieran
+    family-names: Fitzmason
+    email: kfitzmason@unc.edu
+    affiliation: University of North Carolina at Chapel Hill
+    orcid: 'https://orcid.org/0009-0005-2774-635X'
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.19473844
+    description: Zenodo DOI for all versions
+repository-code: 'https://github.com/UNC-Cofires/Form-ABS-EE-Scraping'
+url: 'https://github.com/UNC-Cofires/Form-ABS-EE-Scraping'
+abstract: >-
+  A Python-based pipeline for scraping and processing loan- and
+  property-level data from SEC Form ABS-EE filings of Commercial
+  Mortgage-Backed Securities (CMBS) trusts. This tool automates the
+  extraction of structured asset-level data from the SEC's EDGAR system,
+  specifically focusing on CMBS transactions. It provides a complete
+  workflow from identifying relevant filings to producing
+  longitudinal datasets suitable for research and analysis.
+keywords:
+  - CMBS
+  - commercial real estate
+  - mortgage-backed securities
+  - SEC EDGAR
+  - Form ABS-EE
+  - asset-backed securities
+  - commercial mortgages
+  - real estate finance
+  - web scraping
+  - financial data
+license: MIT
+version: 1.0.0
+date-released: '2026-04-08'

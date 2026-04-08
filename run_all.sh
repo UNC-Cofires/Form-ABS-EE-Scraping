@@ -18,3 +18,4 @@ python3.12 update_index_files.py
 python3.12 identify_CMBS_deals.py
 python3.12 download_CMBS_data.py
 python3.12 parse_CMBS_data.py
+python3.12 concatenate_CMBS_data.py
